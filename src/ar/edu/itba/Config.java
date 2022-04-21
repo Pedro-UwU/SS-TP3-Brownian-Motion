@@ -14,6 +14,7 @@ public class Config {
 
     public static int TOTAL_PARTICLES;
     public static double SPACE_WIDTH;
+    public static double MAX_T;
 
     public static double SMALL_P_MIN_MASS;
     public static double SMALL_P_MAX_MASS;
@@ -40,6 +41,7 @@ public class Config {
         JSONObject root = new JSONObject(content);
         TOTAL_PARTICLES = root.getInt("TOTAL_PARTICLES");
         SPACE_WIDTH = root.getDouble("SPACE_WIDTH");
+        MAX_T = root.getDouble("MAX_T");
 
         JSONObject small = root.getJSONObject("SMALL_PARTICLES");
         SMALL_P_MIN_MASS = small.getDouble("MIN_MASS");

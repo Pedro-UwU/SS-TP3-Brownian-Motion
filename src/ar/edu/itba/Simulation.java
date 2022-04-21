@@ -11,5 +11,11 @@ public class Simulation {
         for (Particle p : particles) {
             System.out.println(p);
         }
+        double t = 0;
+        double max_t = Config.MAX_T;
+
+        while (t < max_t) {
+
+        }
     }
 }

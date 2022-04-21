@@ -24,6 +24,9 @@ public class Generator {
                     if (pos.distance(particles.get(j).pos) < (radius + particles.get(j).radius)) {
                         suitable = false;
                     }
+                    if (suitable && pos.x < radius || pos.x > (space_width-radius) || pos.y < radius || pos.y > (space_width-radius)) {
+                        suitable = false;
+                    }
                 }
                 attempts++;
             } while (!suitable && attempts < MAX_ATTEMPTS);

@@ -1,6 +1,7 @@
 {
   "TOTAL_PARTICLES": 5,
   "SPACE_WIDTH": 60.0,
+  "MAX_T": 15,
   "SMALL_PARTICLES": {
     "MIN_MASS": 0.9,
     "MAX_MASS": 0.9,
