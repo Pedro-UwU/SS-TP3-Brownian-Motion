@@ -1,0 +1,18 @@
+{
+  "TOTAL_PARTICLES": 5,
+  "SPACE_WIDTH": 60.0,
+  "SMALL_PARTICLES": {
+    "MIN_MASS": 0.9,
+    "MAX_MASS": 0.9,
+    "MIN_RADIUS": 0.2,
+    "MAX_RADIUS": 0.2,
+    "MIN_VEL": 0,
+    "MAX_VEL": 2
+  },
+  "BIG_PARTICLE": {
+    "MASS": 2,
+    "RADIUS": 0.7,
+    "VELOCITY": 0
+  }
+
+}
