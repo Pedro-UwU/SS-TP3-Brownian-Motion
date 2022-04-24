@@ -10,19 +10,25 @@ import static ar.edu.itba.Config.init_config;
 public class Simulation {
     public static void main(String[] args) {
         init_config();
-        //List<Particle> particles = Generator.generate(Config.TOTAL_PARTICLES, Config.SPACE_WIDTH, Config.SMALL_P_MIN_RADIUS, Config.SMALL_P_MAX_RADIUS, Config.SMALL_P_MIN_VEL, Config.SMALL_P_MAX_VEL, Config.SMALL_P_MIN_MASS, Config.SMALL_P_MAX_MASS);
-        List<Particle> particles = new ArrayList<>();
-        particles.add(new Particle( 10 , 10.2 , 1.5 , 0 , 1 , 1 ));
-        particles.add(new Particle( 20 , 10 , -1.5 , 0 , 1 , 1 ));
+        List<Particle> particles = Generator.generate(Config.TOTAL_PARTICLES, Config.SPACE_WIDTH, Config.SMALL_P_MIN_RADIUS, Config.SMALL_P_MAX_RADIUS, Config.SMALL_P_MIN_VEL, Config.SMALL_P_MAX_VEL, Config.SMALL_P_MIN_MASS, Config.SMALL_P_MAX_MASS);
+        //List<Particle> particles = new ArrayList<>();
         for (Particle p : particles) {
             System.out.println(p);
         }
-        String folder = OutputGenerator.createStaticInfo(particles , "testChoque");
+        String folder = OutputGenerator.createStaticInfo(particles , "testChoque2");
         double t = 0;
         double max_t = Config.MAX_T;
         JSONArray snapshots = OutputGenerator.saveSnapshot( particles , t , null);
         while (t < max_t) {
             SimEvent event = SimEvent.next_event(Config.SPACE_WIDTH , particles);
+            if( event.t + t >= max_t){
+                for (Particle p : particles) {
+                    p.update(max_t - t);
+                }
+                snapshots = OutputGenerator.saveSnapshot( particles , max_t , snapshots);
+                break;
+            }
+
             for (Particle p : particles) {
                 p.update(event.t);
             }
