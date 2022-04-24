@@ -81,7 +81,7 @@ public class SimEvent {
     private static boolean checkX( Particle pa , Particle pb){
         if( Math.abs(pa.pos.x - pb.pos.x) < pa.radius + pb.radius )
             return true;
-        return (pa.pos.x > pb.pos.x)?(pa.vel.x - pb.vel.x > 0) : (pb.vel.x - pa.vel.x > 0) ;
+        return (pa.pos.x < pb.pos.x)?(pa.vel.x - pb.vel.x > 0) : (pb.vel.x - pa.vel.x > 0) ;
         /* codigo bien
         Particle p1;
         Particle p2;
@@ -99,7 +99,7 @@ public class SimEvent {
     private static boolean checkY( Particle pa , Particle pb){
         if( Math.abs(pa.pos.y - pb.pos.y) < pa.radius + pb.radius )
             return true;
-        return (pa.pos.y > pb.pos.y)?(pa.vel.y - pb.vel.y > 0) : (pb.vel.y - pa.vel.y > 0) ;
+        return (pa.pos.y < pb.pos.y)?(pa.vel.y - pb.vel.y > 0) : (pb.vel.y - pa.vel.y > 0) ;
         /* codigo bien
         Particle p1;
         Particle p2;
