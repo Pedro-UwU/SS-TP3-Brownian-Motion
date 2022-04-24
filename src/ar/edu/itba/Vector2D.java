@@ -24,6 +24,10 @@ public class Vector2D {
         return new Vector2D(x * alpha, y * alpha);
     }
 
+    public Double dot(Vector2D other){
+        return this.x * other.x + this.y * other.y;
+    }
+
     public Vector2D normalize(){
         double factor = this.distance(new Vector2D(0 , 0));
         return new Vector2D(x/factor , y/factor);
