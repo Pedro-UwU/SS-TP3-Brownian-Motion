@@ -16,8 +16,8 @@ public class Particle {
         this.vel = new Vector2D(vx, vy);
         this.radius = radius;
         this.mass = mass;
-        this.id = GLOBAL_ID;
-        GLOBAL_ID++;
+        this.id = Particle.GLOBAL_ID;
+        GLOBAL_ID = GLOBAL_ID + 1;
     }
 
     public Particle(Vector2D pos, Vector2D vel, double radius, double mass) {
@@ -25,6 +25,8 @@ public class Particle {
         this.vel = new Vector2D(vel.x, vel.y);
         this.radius = radius;
         this.mass = mass;
+        this.id = Particle.GLOBAL_ID;
+        GLOBAL_ID = GLOBAL_ID + 1;
     }
 
     void update(double delta_t) {

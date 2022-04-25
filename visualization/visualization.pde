@@ -93,6 +93,8 @@ void draw() {
       line(prevX, prevY, currX, currY);
     }
   }
+  
+  saveFrame("results/"+SIM_NAME+"/data/######.png");
 
   //background(0);
   //println(snap_number);

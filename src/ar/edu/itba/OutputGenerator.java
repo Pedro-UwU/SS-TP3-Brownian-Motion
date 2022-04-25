@@ -33,9 +33,12 @@ public class OutputGenerator {
         jsonObject.put("total_particles" , particles.size());
         jsonObject.put("space_width" , Config.SPACE_WIDTH);
         JSONArray radius = new JSONArray();
+        JSONArray masses = new JSONArray();
         for (Particle p : particles) {
             radius.put(p.radius);
+            masses.put(p.mass);
         }
+        jsonObject.put("mass", masses);
         jsonObject.put("radius" , radius);
         String filePath = DIRECTORY + "/" + folder + "/static.json";
         File dir2 = new File(DIRECTORY + "/" + folder);
