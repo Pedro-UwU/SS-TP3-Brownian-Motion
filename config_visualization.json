@@ -1,4 +1,5 @@
 {
-  "SIMULATION_NAME": "Test5",
-  "FRAME_RATE": 60
+  "SIMULATION_NAME": "Sim_135_5",
+  "FRAME_RATE": 30,
+  "SEE_PATH": true
 }

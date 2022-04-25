@@ -1,5 +1,6 @@
 package ar.edu.itba;
 
+import ar.edu.itba.Collisions.CollisionType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -55,7 +56,7 @@ public class OutputGenerator {
         return folder;
     }
 
-    public static List<JSONObject> saveSnapshot( List<Particle> particles , double time , CollisionType collision, List<JSONObject> pastSnapshots , String folder){
+    public static List<JSONObject> saveSnapshot(List<Particle> particles , double time , CollisionType collision, List<JSONObject> pastSnapshots , String folder){
         if(pastSnapshots == null){
             pastSnapshots = new ArrayList<>();
         }

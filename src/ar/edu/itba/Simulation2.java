@@ -1,21 +1,32 @@
 package ar.edu.itba;
 
+import ar.edu.itba.Collisions.Collision;
 import ar.edu.itba.Collisions.CollisionType;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeSet;
 
 import static ar.edu.itba.Config.init_config;
 
-public class Simulation {
+public class Simulation2 {
+    static List<Particle> particles = new ArrayList<>();
+    static TreeSet<Collision> collisions = new TreeSet<>();
+    static HashMap<Particle, List<Collision>> collisions_per_particle = new HashMap<>();
+
+
     public static void main(String[] args) {
         init_config();
         Particle big_particle = new Particle(Config.SPACE_WIDTH/2, Config.SPACE_WIDTH/2, 0, 0, Config.BIG_P_RADIUS, Config.BIG_P_MASS);
-        List<Particle> particles = new ArrayList<>();
         particles.add(big_particle);
         particles = Generator.generate(Config.TOTAL_PARTICLES, Config.SPACE_WIDTH, Config.SMALL_P_MIN_RADIUS, Config.SMALL_P_MAX_RADIUS, Config.SMALL_P_MIN_VEL, Config.SMALL_P_MAX_VEL, Config.SMALL_P_MIN_MASS, Config.SMALL_P_MAX_MASS, particles);
         //List<Particle> particles = new ArrayList<>();
+//        Particle little_p = new Particle(new Vector2D(0.3, 3), new Vector2D(-1, 0), 0.2, 0.9);
+//        Particle little_p2 =  new Particle(new Vector2D(5.3, 3), new Vector2D(-0.05, 0), 0.2, 0.9);
+//        particles.add(little_p);
+//        particles.add(little_p2);
         for (Particle p : particles) {
             System.out.println(p);
         }
@@ -24,9 +35,14 @@ public class Simulation {
         double t = 0;
         double max_t = Config.MAX_T;
         List<JSONObject> snapshots = OutputGenerator.saveSnapshot( particles , t , CollisionType.NONE , null , folder);
+        SimEvent2.fillCollisions(Config.SPACE_WIDTH, particles, collisions, collisions_per_particle);
         while (t < max_t) {
-            SimEvent event = SimEvent.next_event(Config.SPACE_WIDTH , particles);
-            if( event.t + t >= max_t){
+            Collision next_event = collisions.first();//SimEvent2.next_event(Config.SPACE_WIDTH , particles, collisions, collisions_per_particle);
+            if (next_event.t < t) {
+                System.out.println("ERRIRRRRRRRRRRRRRRRRRRRRRRRRR");
+                System.out.println(next_event.type);
+            }
+            if(next_event.t >= max_t){
                 for (Particle p : particles) {
                     p.update(max_t - t);
                 }
@@ -35,13 +51,16 @@ public class Simulation {
             }
 
             for (Particle p : particles) {
-                p.update(event.t);
+                p.update(next_event.t - t);
             }
-            collisionOperator(event);
-            t+= event.t;
-            snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots , folder);
+            //collisionOperator(next_event);
+            next_event.collide();
+            t = next_event.t;
+            next_event.clear_collisions(collisions, collisions_per_particle);
+            next_event.save_new_collisions(t, Config.SPACE_WIDTH, collisions, collisions_per_particle, particles);
+            snapshots = OutputGenerator.saveSnapshot( particles , t , next_event.type, snapshots , folder);
             System.out.println("Current T: " + t);
-            if (event.p1 == big_particle &&  (event.type == CollisionType.HORIZONTAL_WALL || event.type == CollisionType.VERTICAL_WALL)) {
+            if (next_event.shouldEnd(big_particle)) {
                 break;
             }
         }
