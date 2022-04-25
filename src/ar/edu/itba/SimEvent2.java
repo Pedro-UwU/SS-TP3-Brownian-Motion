@@ -106,7 +106,10 @@ public class SimEvent2 {
             }
         }
     }
-
+    public static void put_collision(Particle p, Collision col, HashMap<Particle, List<Collision>> collisions_per_particle) {
+        List<Collision> collisions_of_p = collisions_per_particle.computeIfAbsent(p, k -> new LinkedList<>());
+        collisions_of_p.add(col);
+    }
     public static double calculateCollisionTime(Particle p1 , Particle p2){
         Vector2D dR = p1.pos.sub(p2.pos);
         Vector2D dV = p1.vel.sub(p2.vel);
@@ -225,9 +228,6 @@ public class SimEvent2 {
     //Teorica_3 diapo 14
 
 
-    public static void put_collision(Particle p, Collision col, HashMap<Particle, List<Collision>> collisions_per_particle) {
-        List<Collision> collisions_of_p = collisions_per_particle.computeIfAbsent(p, k -> new LinkedList<>());
-        collisions_of_p.add(col);
-    }
+
 
 }
