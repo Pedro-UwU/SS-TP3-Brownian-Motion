@@ -1,5 +1,6 @@
 package ar.edu.itba;
 
+import com.sun.xml.internal.ws.wsdl.writer.document.Part;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -10,12 +11,15 @@ import static ar.edu.itba.Config.init_config;
 public class Simulation {
     public static void main(String[] args) {
         init_config();
-        List<Particle> particles = Generator.generate(Config.TOTAL_PARTICLES, Config.SPACE_WIDTH, Config.SMALL_P_MIN_RADIUS, Config.SMALL_P_MAX_RADIUS, Config.SMALL_P_MIN_VEL, Config.SMALL_P_MAX_VEL, Config.SMALL_P_MIN_MASS, Config.SMALL_P_MAX_MASS);
+        Particle big_particle = new Particle(Config.SPACE_WIDTH/2, Config.SPACE_WIDTH/2, 0, 0, Config.BIG_P_RADIUS, Config.BIG_P_MASS);
+        List<Particle> particles = new ArrayList<>();
+        particles.add(big_particle);
+        particles = Generator.generate(Config.TOTAL_PARTICLES, Config.SPACE_WIDTH, Config.SMALL_P_MIN_RADIUS, Config.SMALL_P_MAX_RADIUS, Config.SMALL_P_MIN_VEL, Config.SMALL_P_MAX_VEL, Config.SMALL_P_MIN_MASS, Config.SMALL_P_MAX_MASS, particles);
         //List<Particle> particles = new ArrayList<>();
         for (Particle p : particles) {
             System.out.println(p);
         }
-        String folder = OutputGenerator.createStaticInfo(particles , "testChoque2");
+        String folder = OutputGenerator.createStaticInfo(particles , Config.SIM_NAME);
         double t = 0;
         double max_t = Config.MAX_T;
         JSONArray snapshots = OutputGenerator.saveSnapshot( particles , t , null);
@@ -34,6 +38,7 @@ public class Simulation {
             }
             collisionOperator(event);
             t+= event.t;
+            System.out.println("Current T: " + t);
             snapshots = OutputGenerator.saveSnapshot( particles , t , snapshots);
         }
         OutputGenerator.generateDynamic(snapshots , folder);
@@ -43,18 +48,18 @@ public class Simulation {
         Vector2D p1Vel = e.p1.vel;
         switch (e.type){
             case HORIZONTAL_WALL:
-                System.out.println("wall");
+                //System.out.println("wall");
                 e.p1.vel = new Vector2D(p1Vel.x , -p1Vel.y);
                 break;
             case VERTICAL_WALL:
-                System.out.println("wall");
+                //System.out.println("wall");
                 e.p1.vel = new Vector2D(-p1Vel.x  , p1Vel.y);
                 break;
             case PARTICLE:
-                System.out.println("collision");
-                System.out.println(e.p1 + " " + e.p2);
+                //System.out.println("collision");
+                //System.out.println(e.p1 + " " + e.p2);
                 collisionBetweenParticles(e.p1 , e.p2);
-                System.out.println(e.p1 + " " + e.p2);
+                //System.out.println(e.p1 + " " + e.p2);
 
                 break;
         }
