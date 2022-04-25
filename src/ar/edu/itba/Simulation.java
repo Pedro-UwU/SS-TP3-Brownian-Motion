@@ -2,6 +2,7 @@ package ar.edu.itba;
 
 import com.sun.xml.internal.ws.wsdl.writer.document.Part;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +21,17 @@ public class Simulation {
             System.out.println(p);
         }
         String folder = OutputGenerator.createStaticInfo(particles , Config.SIM_NAME);
+        OutputGenerator.initializeDynamicWriter(folder);
         double t = 0;
         double max_t = Config.MAX_T;
-        JSONArray snapshots = OutputGenerator.saveSnapshot( particles , t , CollisionType.NONE , null);
+        List<JSONObject> snapshots = OutputGenerator.saveSnapshot( particles , t , CollisionType.NONE , null , folder);
         while (t < max_t) {
             SimEvent event = SimEvent.next_event(Config.SPACE_WIDTH , particles);
             if( event.t + t >= max_t){
                 for (Particle p : particles) {
                     p.update(max_t - t);
                 }
-                snapshots = OutputGenerator.saveSnapshot( particles , max_t , CollisionType.NONE , snapshots);
+                snapshots = OutputGenerator.saveSnapshot( particles , max_t , CollisionType.NONE , snapshots , folder);
                 break;
             }
 
@@ -38,13 +40,14 @@ public class Simulation {
             }
             collisionOperator(event);
             t+= event.t;
-            snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots);
+            snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots , folder);
             System.out.println("Current T: " + t);
             if (event.p1 == big_particle &&  (event.type == CollisionType.HORIZONTAL_WALL || event.type == CollisionType.VERTICAL_WALL)) {
                 break;
             }
         }
-        OutputGenerator.generateDynamic(snapshots , folder);
+        OutputGenerator.generateDynamic(snapshots);
+        OutputGenerator.closeDynamicWriter();
     }
 
     private static void collisionOperator( SimEvent e){

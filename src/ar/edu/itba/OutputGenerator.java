@@ -8,11 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OutputGenerator {
     private final static String DIRECTORY = "./results";
-
+    private static FileWriter SNAPSHOT_WRITER;
+    private static boolean comma = false;
     //Returns folder
 
     public static String createStaticInfo(List<Particle> particles , String folder) {
@@ -51,9 +53,9 @@ public class OutputGenerator {
         return folder;
     }
 
-    public static JSONArray saveSnapshot( List<Particle> particles , double time , CollisionType collision, JSONArray pastSnapshots){
+    public static List<JSONObject> saveSnapshot( List<Particle> particles , double time , CollisionType collision, List<JSONObject> pastSnapshots , String folder){
         if(pastSnapshots == null){
-            pastSnapshots = new JSONArray();
+            pastSnapshots = new ArrayList<>();
         }
         JSONObject snapshot = new JSONObject();
         snapshot.put("t" , time);
@@ -68,23 +70,48 @@ public class OutputGenerator {
         snapshot.put("p" , positions);
         snapshot.put("v" , vel );
         snapshot.put("c" , collision.ordinal());
-        pastSnapshots.put(snapshot);
+        pastSnapshots.add(snapshot);
+        if(pastSnapshots.size() > 1){
+            generateDynamic(pastSnapshots);
+            pastSnapshots = null;
+        }
         return  pastSnapshots;
     }
 
-    public static void generateDynamic(JSONArray snapshots , String folder){
-        JSONObject info = new JSONObject();
-        info.put("info" , snapshots );
+
+    public static void initializeDynamicWriter(String folder){
+
         String filePath = DIRECTORY + "/" + folder + "/snapshots.json";
         File myObj = new File(filePath);
         try {
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
-                FileWriter myWriter = new FileWriter(filePath );
-                myWriter.write(info.toString());
-                myWriter.close();
-            }else{
-                System.out.println("File not created");
+                SNAPSHOT_WRITER = new FileWriter(filePath);
+                SNAPSHOT_WRITER.write("{\"info\":[");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void closeDynamicWriter(){
+        try {
+                SNAPSHOT_WRITER.write("]}");
+                SNAPSHOT_WRITER.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public static void generateDynamic(List<JSONObject> snapshots){
+        if(snapshots == null || snapshots.size() == 0)
+            return;
+        try {
+            for( JSONObject o : snapshots) {
+                if(comma){
+                    SNAPSHOT_WRITER.write(",");
+                }
+                comma = true;
+                SNAPSHOT_WRITER.write(o.toString());
             }
         }catch (IOException e){
             e.printStackTrace();
