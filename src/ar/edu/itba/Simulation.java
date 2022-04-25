@@ -40,6 +40,9 @@ public class Simulation {
             t+= event.t;
             snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots);
             System.out.println("Current T: " + t);
+            if (event.p1 == big_particle &&  (event.type == CollisionType.HORIZONTAL_WALL || event.type == CollisionType.VERTICAL_WALL)) {
+                break;
+            }
         }
         OutputGenerator.generateDynamic(snapshots , folder);
     }
