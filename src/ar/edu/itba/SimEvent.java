@@ -1,6 +1,6 @@
 package ar.edu.itba;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Part;
+import ar.edu.itba.Collisions.CollisionType;
 
 import java.util.List;
 
@@ -15,6 +15,8 @@ public class SimEvent {
         this.p2 = p2;
         this.type = type;
     }
+
+
 
     static SimEvent next_event(double space_width, List<Particle> particles) {
         CollisionType type = CollisionType.NONE;

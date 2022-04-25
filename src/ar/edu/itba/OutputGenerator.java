@@ -1,5 +1,6 @@
 package ar.edu.itba;
 
+import ar.edu.itba.Collisions.CollisionType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,9 +33,12 @@ public class OutputGenerator {
         jsonObject.put("total_particles" , particles.size());
         jsonObject.put("space_width" , Config.SPACE_WIDTH);
         JSONArray radius = new JSONArray();
+        JSONArray masses = new JSONArray();
         for (Particle p : particles) {
             radius.put(p.radius);
+            masses.put(p.mass);
         }
+        jsonObject.put("mass", masses);
         jsonObject.put("radius" , radius);
         String filePath = DIRECTORY + "/" + folder + "/static.json";
         File dir2 = new File(DIRECTORY + "/" + folder);
@@ -55,7 +59,7 @@ public class OutputGenerator {
         return folder;
     }
 
-    public static List<JSONObject> saveSnapshot( List<Particle> particles , double time , CollisionType collision, List<JSONObject> pastSnapshots , String folder){
+    public static List<JSONObject> saveSnapshot(List<Particle> particles , double time , CollisionType collision, List<JSONObject> pastSnapshots , String folder){
         if(pastSnapshots == null){
             pastSnapshots = new ArrayList<>();
         }

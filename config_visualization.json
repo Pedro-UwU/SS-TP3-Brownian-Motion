@@ -1,4 +1,5 @@
 {
-  "SIMULATION_NAME": "Test5",
-  "FRAME_RATE": 60
+  "SIMULATION_NAME": "Temp_135_vsqrt2_1",
+  "FRAME_RATE": 60,
+  "SEE_PATH": true
 }

@@ -1,7 +1,6 @@
 package ar.edu.itba;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Part;
-import org.json.JSONArray;
+import ar.edu.itba.Collisions.CollisionType;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

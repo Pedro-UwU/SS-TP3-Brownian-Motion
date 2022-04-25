@@ -1,15 +1,15 @@
 {
-  "TOTAL_PARTICLES": 130,
+  "TOTAL_PARTICLES": 135,
   "SPACE_WIDTH": 6.0,
-  "MAX_T": 10,
-  "SIMULATION_NAME": "Test2",
+  "MAX_T": 60,
+  "SIMULATION_NAME": "Temp_135_v2_1",
   "SMALL_PARTICLES": {
     "MIN_MASS": 0.9,
     "MAX_MASS": 0.9,
     "MIN_RADIUS": 0.2,
     "MAX_RADIUS": 0.2,
     "MIN_VEL": 0,
-    "MAX_VEL": 2
+    "MAX_VEL": 4
   },
   "BIG_PARTICLE": {
     "MASS": 2,
