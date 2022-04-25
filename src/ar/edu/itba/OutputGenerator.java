@@ -51,7 +51,7 @@ public class OutputGenerator {
         return folder;
     }
 
-    public static JSONArray saveSnapshot( List<Particle> particles , double time , JSONArray pastSnapshots){
+    public static JSONArray saveSnapshot( List<Particle> particles , double time , CollisionType collision, JSONArray pastSnapshots){
         if(pastSnapshots == null){
             pastSnapshots = new JSONArray();
         }
@@ -67,6 +67,7 @@ public class OutputGenerator {
         }
         snapshot.put("p" , positions);
         snapshot.put("v" , vel );
+        snapshot.put("c" , collision.ordinal());
         pastSnapshots.put(snapshot);
         return  pastSnapshots;
     }
@@ -89,5 +90,4 @@ public class OutputGenerator {
             e.printStackTrace();
         }
     }
-
 }

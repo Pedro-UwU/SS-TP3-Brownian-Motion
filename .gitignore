@@ -26,3 +26,6 @@ hs_err_pid*
 SS-TP3-Brownian-Motion.iml
 
 results
+
+analytics/venv
+analytics/__pycache__

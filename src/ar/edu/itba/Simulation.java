@@ -22,14 +22,14 @@ public class Simulation {
         String folder = OutputGenerator.createStaticInfo(particles , Config.SIM_NAME);
         double t = 0;
         double max_t = Config.MAX_T;
-        JSONArray snapshots = OutputGenerator.saveSnapshot( particles , t , null);
+        JSONArray snapshots = OutputGenerator.saveSnapshot( particles , t , CollisionType.NONE , null);
         while (t < max_t) {
             SimEvent event = SimEvent.next_event(Config.SPACE_WIDTH , particles);
             if( event.t + t >= max_t){
                 for (Particle p : particles) {
                     p.update(max_t - t);
                 }
-                snapshots = OutputGenerator.saveSnapshot( particles , max_t , snapshots);
+                snapshots = OutputGenerator.saveSnapshot( particles , max_t , CollisionType.NONE , snapshots);
                 break;
             }
 
@@ -38,8 +38,8 @@ public class Simulation {
             }
             collisionOperator(event);
             t+= event.t;
+            snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots);
             System.out.println("Current T: " + t);
-            snapshots = OutputGenerator.saveSnapshot( particles , t , snapshots);
         }
         OutputGenerator.generateDynamic(snapshots , folder);
     }
@@ -48,18 +48,15 @@ public class Simulation {
         Vector2D p1Vel = e.p1.vel;
         switch (e.type){
             case HORIZONTAL_WALL:
-                //System.out.println("wall");
                 e.p1.vel = new Vector2D(p1Vel.x , -p1Vel.y);
                 break;
             case VERTICAL_WALL:
-                //System.out.println("wall");
+
                 e.p1.vel = new Vector2D(-p1Vel.x  , p1Vel.y);
                 break;
             case PARTICLE:
-                //System.out.println("collision");
-                //System.out.println(e.p1 + " " + e.p2);
+
                 collisionBetweenParticles(e.p1 , e.p2);
-                //System.out.println(e.p1 + " " + e.p2);
 
                 break;
         }
