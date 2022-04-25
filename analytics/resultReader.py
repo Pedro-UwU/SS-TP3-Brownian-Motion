@@ -54,4 +54,37 @@ class ResultReader:
                 run['info'] = data['info']
                 runs.append(run)       
         return runs
-    
+
+    @staticmethod
+    def parse_ej2(path , regex = '.*'):
+        folders = [ folder for folder in listdir(path) if re.match(regex  , folder )]
+        #folders = listdir(path)
+        print(folders)
+        runs = []
+        
+        for foldername in folders:
+            run = dict()
+            with open(f'{path}/{foldername}/static.json') as json_file:
+                data = json.load(json_file)
+                run['total'] = data['total_particles']
+                run['width'] = data['space_width']
+                #print(run)
+                
+            with open(f'{path}/{foldername}/snapshots.json') as json_file:
+
+                data = json.load(json_file)
+
+                totalTime = data['info'][-1]['t']
+                vel_modules = [] 
+                for snapshot in data['info']:
+                    if( 2/3 * totalTime <= snapshot['t']):
+                        speedList = []
+                        for vel in snapshot['v'][1:]:
+                            vel_modules.append(np.sqrt(vel[0]**2 + vel[1]**2))
+                run['modules'] = vel_modules
+                vel_modules_initial = []
+                for vel in data['info'][0][1:]:
+                    vel_modules_initial.append(np.sqrt(vel[0]**2 + vel[1]**2))
+                run['starting_module'] = vel_modules_initial
+                runs.append(run)       
+        return runs

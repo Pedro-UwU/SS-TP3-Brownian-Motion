@@ -9,11 +9,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import json
 
-def punto_2( data):
-    SpeedModules.punto_2(data , 25)
+def punto_2():
+    SpeedModules.punto_2(ResultReader.parse_ej2('../results' , '135') , 25)
 
 def main():
-    data =  ResultReader.parse('../results' , 'Sim')
+    punto_2()
+    #data =  ResultReader.parse('../results' , 'Sim')
    # dcm_array , times = Difussion.get_dcm(data[0]['info'] , 0)
    # Difussion.graphicate_dcm(dcm_array , times)
    
