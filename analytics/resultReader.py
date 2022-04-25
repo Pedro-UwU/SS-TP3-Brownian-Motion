@@ -45,6 +45,9 @@ class ResultReader:
                         for vel in snapshot['v'][1:]:
                             vel_modules.append(np.sqrt(vel[0]**2 + vel[1]**2))
                 run['modules'] = vel_modules
+                run['times'] = [ t['t']-data['info'][i]['t'] for i , t in enumerate(data['info'][1:]) ]
+                run['avg_time'] = np.average(run['times'])
+                run['info'] = data['info']
                 runs.append(run)       
         return runs
     

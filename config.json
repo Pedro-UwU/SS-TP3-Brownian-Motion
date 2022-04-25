@@ -2,7 +2,7 @@
   "TOTAL_PARTICLES": 130,
   "SPACE_WIDTH": 6.0,
   "MAX_T": 10,
-  "SIMULATION_NAME": "Test1",
+  "SIMULATION_NAME": "Test2",
   "SMALL_PARTICLES": {
     "MIN_MASS": 0.9,
     "MAX_MASS": 0.9,
