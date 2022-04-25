@@ -1,5 +1,6 @@
 String CONFIG_LOCATION = "../config_visualization.json";
 String SIM_NAME;
+Boolean SEE_PATH = true;
 int snap_number = 0;
 
 float space_width;
@@ -7,6 +8,8 @@ float[] particles_radius;
 int total_particles;
 int frame_rate;
 JSONArray snapshots;
+
+ArrayList<PVector> path;
 
 boolean temp = true;
 int seconds = 0;
@@ -21,6 +24,7 @@ void setup() {
   JSONObject config = loadJSONObject(CONFIG_LOCATION);
   SIM_NAME = config.getString("SIMULATION_NAME");
   frame_rate = config.getInt("FRAME_RATE");
+  path = new ArrayList<>();
 
   JSONObject dynamic_data = loadJSONObject("../results/" + SIM_NAME + "/snapshots.json");
   JSONObject static_data = loadJSONObject("../results/" + SIM_NAME + "/static.json");
@@ -41,6 +45,7 @@ void setup() {
 
 void draw() {
   fill(51, 200);
+  noStroke();
   rect(0, 0, width, height);
   println("frame count: " + frameCount);
   
@@ -48,26 +53,45 @@ void draw() {
     noLoop();
     return;
   }
-
+  
+  
 
   JSONObject data = snapshots.getJSONObject(snap_number++);
   current = new Snap(data.getFloat("t"), data.getJSONArray("p"), data.getJSONArray("v"));
   if (first) {
-    drawSnap(current);
     first = false;
+    
   } else {
     float current_t = seconds + (frame_in_second * 1.0/frame_rate);
     while (snap_number <= snapshots.size() && data.getFloat("t") < current_t) {
       data = snapshots.getJSONObject(snap_number++);
+      current = new Snap(data.getFloat("t"), data.getJSONArray("p"), data.getJSONArray("v"));
     }
-    drawSnap(new Snap(data.getFloat("t"), data.getJSONArray("p"), data.getJSONArray("v")));
   }
+  if (SEE_PATH) {
+    path.add(current.pos[0]);
+  }
+  drawSnap(current);
   
   
   frame_in_second++;
   if (frame_in_second >= frame_rate) {
     seconds++;
     frame_in_second = 0;
+  }
+  
+  if (SEE_PATH) {
+    for (int i = 1; i < path.size(); i++) {
+      PVector prev = path.get(i-1);
+      PVector current = path.get(i);
+      stroke(0, 0, 255);
+      strokeWeight(5);
+      float prevX = map(prev.x, 0, space_width, 0, width);
+      float prevY = map(prev.y, 0, space_width, 0, height);
+      float currX = map(current.x, 0, space_width, 0, width);
+      float currY = map(current.y, 0, space_width, 0, height);
+      line(prevX, prevY, currX, currY);
+    }
   }
 
   //background(0);
@@ -96,7 +120,7 @@ void drawParticle(float x, float y, float radius, color col) {
 
 void drawSnap(Snap s) {
   for (int i = 0; i < s.pos.length; i++) {
-    drawParticle(s.pos[i].x, s.pos[i].y, particles_radius[i]);
+    drawParticle(s.pos[i].x, s.pos[i].y, particles_radius[i], i==0?color(255, 255, 0) : color(255, 0, 0));
   }
 }
 
