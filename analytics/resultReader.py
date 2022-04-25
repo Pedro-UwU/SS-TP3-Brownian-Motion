@@ -4,6 +4,7 @@ from os import listdir
 from os.path import isfile, join
 from typing import Dict
 import matplotlib.pyplot as plt
+from speedModules import SpeedModules
 import numpy as np
 import re
 
@@ -76,15 +77,18 @@ class ResultReader:
 
                 totalTime = data['info'][-1]['t']
                 vel_modules = [] 
+                hist , x = SpeedModules.initialize_hist(0 , 5 , 25)
                 for snapshot in data['info']:
                     if( 2/3 * totalTime <= snapshot['t']):
-                        speedList = []
                         for vel in snapshot['v'][1:]:
-                            vel_modules.append(np.sqrt(vel[0]**2 + vel[1]**2))
-                run['modules'] = vel_modules
+                            SpeedModules.put_hist(np.sqrt(vel[0]**2 + vel[1]**2) , hist , x)
+                run['modules_hist'] = hist
+                run['modules_x'] =x
                 vel_modules_initial = []
-                for vel in data['info'][0][1:]:
-                    vel_modules_initial.append(np.sqrt(vel[0]**2 + vel[1]**2))
-                run['starting_module'] = vel_modules_initial
+                hist2 , x2 = SpeedModules.initialize_hist(0 , 5 , 25)
+                for vel in data['info'][0]['v'][1:]:
+                    SpeedModules.put_hist(np.sqrt(vel[0]**2 + vel[1]**2) , hist2 , x2)
+                run['starting_module_hist'] = hist2
+                run['starting_module_x'] = hist2
                 runs.append(run)       
         return runs

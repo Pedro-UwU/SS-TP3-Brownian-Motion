@@ -18,7 +18,7 @@ class ColissionStats:
 
     @staticmethod
     def pdf_collitionTime(runs):
-            x = []
+        x = []
         #Agarro todos los modulos de velocidad
         for test in runs:
             x = x + test['times']

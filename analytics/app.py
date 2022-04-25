@@ -10,7 +10,7 @@ import numpy as np
 import json
 
 def punto_2():
-    SpeedModules.punto_2(ResultReader.parse_ej2('../results' , '135') , 25)
+    SpeedModules.punto_2( ResultReader.parse_ej2('../results' , 'Sim') , 25)
 
 def main():
     punto_2()
