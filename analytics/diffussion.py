@@ -1,4 +1,4 @@
-from audioop import avg
+
 import statistics
 import matplotlib.pyplot as plt
 import numpy as np
@@ -33,17 +33,23 @@ class Difussion:
         for dcm in dcm_multi:
             if( min_size is None or len(dcm[0]) < min_size):
                 min_size = len(dcm[0])
-                min_t = dcm[1][-1]
         avg_dcm = [0] * min_size
-        error_dcm = [0] *min_size
+        error_dcm = [0] * min_size
         for i in range( 0 , min_size):
             values = []
             for dcm in dcm_multi:
                 values.append(dcm[i])
             avg_dcm[i] = statistics.mean(values)
             error_dcm[i] = statistics.stdev(values)/np.sqrt(len(values))
-        plt.plot([x*0.2 for x in range(0 , len(avg_dcm))] , avg_dcm)
-        plt.show()
+        return avg_dcm , error_dcm , [x*0.2 for x in range(0 , len(avg_dcm))]
+      #  plt.plot([x*0.2 for x in range(0 , len(avg_dcm))] , avg_dcm)
+       # plt.show()
+
+    @staticmethod
+    def reg_lineal(avg_dcm , times):
+        m , b = np.polyfit(times , avg_dcm , 1)
+        return m*times + b
+
 
     @staticmethod
     def graphicate_dcm(dcm_array , times):

@@ -1,15 +1,27 @@
-
+import statistics
 import matplotlib.pyplot as plt
 import numpy as np
-import re
-class SpeedModules:
+
+
+
+class ColissionStats:
 
     @staticmethod
-    def get_pdf(data):
-        x = []
+    def avg_frecuency(runs):
+        f = [ r['frecuency'] for r in runs ]
+        return np.average(f)
+
+    @staticmethod
+    def avg_collitionTime(runs):
+        t = [ r['avg_time'] for r in runs]
+        return np.average(t)
+
+    @staticmethod
+    def pdf_collitionTime(runs):
+            x = []
         #Agarro todos los modulos de velocidad
-        for test in data:
-            x = x + test['modules']
+        for test in runs:
+            x = x + test['times']
         #con N setteo cuantas subdivisiones quiero
         n = 25
         #Creo el histograma
