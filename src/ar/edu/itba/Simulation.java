@@ -9,6 +9,42 @@ import java.util.List;
 import static ar.edu.itba.Config.init_config;
 
 public class Simulation {
+
+
+    public static void simulate(){
+        Particle big_particle = new Particle(Config.SPACE_WIDTH/2, Config.SPACE_WIDTH/2, 0, 0, Config.BIG_P_RADIUS, Config.BIG_P_MASS);
+        List<Particle> particles = new ArrayList<>();
+        particles.add(big_particle);
+        particles = Generator.generate(Config.TOTAL_PARTICLES, Config.SPACE_WIDTH, Config.SMALL_P_MIN_RADIUS, Config.SMALL_P_MAX_RADIUS, Config.SMALL_P_MIN_VEL, Config.SMALL_P_MAX_VEL, Config.SMALL_P_MIN_MASS, Config.SMALL_P_MAX_MASS, particles);
+        for (Particle p : particles) {
+            System.out.println(p);
+        }
+        String folder = OutputGenerator.createStaticInfo(particles , Config.SIM_NAME);
+        OutputGenerator.initializeDynamicWriter(folder);
+        double t = 0;
+        double max_t = Config.MAX_T;
+        List<JSONObject> snapshots = OutputGenerator.saveSnapshot( particles , t , CollisionType.NONE , null , folder);
+        while (t < max_t) {
+            SimEvent event = SimEvent.next_event(Config.SPACE_WIDTH , particles);
+            for (Particle p : particles) {
+                p.update(event.t);
+            }
+            collisionOperator(event);
+            t+= event.t;
+            snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots , folder);
+            System.out.println("Current T: " + t);
+            if (event.p1 == big_particle &&  (event.type == CollisionType.HORIZONTAL_WALL || event.type == CollisionType.VERTICAL_WALL)) {
+                break;
+            }
+        }
+        OutputGenerator.generateDynamic(snapshots);
+        OutputGenerator.closeDynamicWriter();
+    }
+
+
+
+
+
     public static void main(String[] args) {
         init_config();
         Particle big_particle = new Particle(Config.SPACE_WIDTH/2, Config.SPACE_WIDTH/2, 0, 0, Config.BIG_P_RADIUS, Config.BIG_P_MASS);
@@ -22,24 +58,27 @@ public class Simulation {
         String folder = OutputGenerator.createStaticInfo(particles , Config.SIM_NAME);
         OutputGenerator.initializeDynamicWriter(folder);
         double t = 0;
+        int n = 0;
         double max_t = Config.MAX_T;
         List<JSONObject> snapshots = OutputGenerator.saveSnapshot( particles , t , CollisionType.NONE , null , folder);
         while (t < max_t) {
             SimEvent event = SimEvent.next_event(Config.SPACE_WIDTH , particles);
-            if( event.t + t >= max_t){
-                for (Particle p : particles) {
-                    p.update(max_t - t);
-                }
-                snapshots = OutputGenerator.saveSnapshot( particles , max_t , CollisionType.NONE , snapshots , folder);
-                break;
-            }
+//            if( event.t + t >= max_t){
+//                for (Particle p : particles) {
+//                    p.update(max_t - t);
+//                }
+//                snapshots = OutputGenerator.saveSnapshot( particles , max_t , CollisionType.NONE , snapshots , folder);
+//                break;
+//            }
 
             for (Particle p : particles) {
                 p.update(event.t);
             }
             collisionOperator(event);
             t+= event.t;
-            snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots , folder);
+            //if ( n % 10 == 0)
+                snapshots = OutputGenerator.saveSnapshot( particles , t , event.type, snapshots , folder);
+            n++;
             System.out.println("Current T: " + t);
             if (event.p1 == big_particle &&  (event.type == CollisionType.HORIZONTAL_WALL || event.type == CollisionType.VERTICAL_WALL)) {
                 break;

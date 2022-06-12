@@ -1,6 +1,7 @@
 
 from cProfile import label
 import statistics
+from temperature import Temperature
 from diffussion import Difussion
 from speedModules import SpeedModules
 from resultReader import ResultReader
@@ -10,7 +11,7 @@ import numpy as np
 import json
 
 def punto_2():
-    SpeedModules.punto_2( ResultReader.parse_ej2('../results' , 'Sim') , 25)
+    SpeedModules.punto_2(ResultReader.parse_ej2('../results' , 'Sim_135_[0-9]+') , 25)
 
 def main():
     punto_2()

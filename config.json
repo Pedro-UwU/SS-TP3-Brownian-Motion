@@ -1,8 +1,8 @@
 {
-  "TOTAL_PARTICLES": 10,
+  "TOTAL_PARTICLES": 135,
   "SPACE_WIDTH": 6.0,
-  "MAX_T": 300,
-  "SIMULATION_NAME": "Sim_135_1",
+  "MAX_T": 0.4,
+  "SIMULATION_NAME": "test",
   "SMALL_PARTICLES": {
     "MIN_MASS": 0.9,
     "MAX_MASS": 0.9,

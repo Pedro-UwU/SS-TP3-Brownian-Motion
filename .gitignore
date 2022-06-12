@@ -29,3 +29,9 @@ results
 
 analytics/venv
 analytics/__pycache__
+
+analytics2/__pycache__
+analytics2/dt-exports/*.json
+
+config.json
+config_visualization.json

@@ -1,5 +1,5 @@
 String CONFIG_LOCATION = "../config_visualization.json";
-String SIM_NAME;
+String SIM_NAME = "Sim_4";
 Boolean SEE_PATH = true;
 int snap_number = 0;
 

@@ -39,17 +39,6 @@ class ResultReader:
                     collitions= collitions - 1
                 totalTime = data['info'][-1]['t']
                 run['frecuency'] = collitions / totalTime
-                vel_modules = [] 
-                for snapshot in data['info']:
-                    if( 2/3 * totalTime <= snapshot['t']):
-                        speedList = []
-                        for vel in snapshot['v'][1:]:
-                            vel_modules.append(np.sqrt(vel[0]**2 + vel[1]**2))
-                run['modules'] = vel_modules
-                vel_modules_initial = []
-                for vel in data['info'][0][1:]:
-                    vel_modules_initial.append(np.sqrt(vel[0]**2 + vel[1]**2))
-                run['starting_module'] = vel_modules_initial
                 run['times'] = [ t['t']-data['info'][i]['t'] for i , t in enumerate(data['info'][1:]) ]
                 run['avg_time'] = np.average(run['times'])
                 run['info'] = data['info']
@@ -79,16 +68,15 @@ class ResultReader:
                 vel_modules = [] 
                 hist , x = SpeedModules.initialize_hist(0 , 5 , 25)
                 for snapshot in data['info']:
-                    if( 2/3 * totalTime <= snapshot['t']):
+                     if( 2/3 * totalTime <= snapshot['t']):
                         for vel in snapshot['v'][1:]:
-                            SpeedModules.put_hist(np.sqrt(vel[0]**2 + vel[1]**2) , hist , x)
+                             SpeedModules.put_hist(np.sqrt(vel[0]**2 + vel[1]**2) , hist , x)
                 run['modules_hist'] = hist
                 run['modules_x'] =x
-                vel_modules_initial = []
                 hist2 , x2 = SpeedModules.initialize_hist(0 , 5 , 25)
                 for vel in data['info'][0]['v'][1:]:
                     SpeedModules.put_hist(np.sqrt(vel[0]**2 + vel[1]**2) , hist2 , x2)
-                run['starting_module_hist'] = hist2
-                run['starting_module_x'] = hist2
+                run['start_modules_hist'] = hist2
+                run['start_modules_x'] = x2
                 runs.append(run)       
         return runs

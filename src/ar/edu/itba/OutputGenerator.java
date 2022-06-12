@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class OutputGenerator {
 
@@ -33,10 +34,13 @@ public class OutputGenerator {
         jsonObject.put("total_particles" , particles.size());
         jsonObject.put("space_width" , Config.SPACE_WIDTH);
         JSONArray radius = new JSONArray();
+        JSONArray masses = new JSONArray();
         for (Particle p : particles) {
             radius.put(p.radius);
+            masses.put(p.mass);
         }
         jsonObject.put("radius" , radius);
+        jsonObject.put("mass" , masses);
         String filePath = DIRECTORY + "/" + folder + "/static.json";
         File dir2 = new File(DIRECTORY + "/" + folder);
         dir2.mkdir();
@@ -64,9 +68,10 @@ public class OutputGenerator {
         snapshot.put("t" , time);
         JSONArray positions = new JSONArray();
         JSONArray vel = new JSONArray();
+        String format = "%.5f";
         for (Particle p : particles) {
-            double[] p_vel = {p.vel.x , p.vel.y};
-            double[] p_pos = {p.pos.x , p.pos.y};
+            double[] p_vel = {Double.valueOf(String.format(Locale.ENGLISH,format, p.vel.x)) ,Double.valueOf(String.format(Locale.ENGLISH,format, p.vel.y))};
+            double[] p_pos = {Double.valueOf(String.format(Locale.ENGLISH,format, p.pos.x)) ,Double.valueOf(String.format(Locale.ENGLISH,format, p.pos.y))};
             positions.put(p_pos);
             vel.put(p_vel);
         }
@@ -105,6 +110,7 @@ public class OutputGenerator {
             e.printStackTrace();
         }
     }
+
     public static void generateDynamic(List<JSONObject> snapshots){
         if(snapshots == null || snapshots.size() == 0)
             return;
