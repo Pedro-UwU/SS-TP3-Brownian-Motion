@@ -35,3 +35,8 @@ analytics2/dt-exports/*.json
 
 config.json
 config_visualization.json
+visualization/*.mp4
+visualization/videos
+analytics2/*/*.json
+analytics2/ej*/__pycache__
+analytics2/trayectory-exports/*

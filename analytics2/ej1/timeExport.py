@@ -19,11 +19,12 @@ class TimeExporter:
         print(folders)
         
         for foldername in folders:
+            print(f'in folder {foldername}')
             run = dict()
-            with open(f'{path}/{foldername}/static.json') as json_file:
-                data = json.load(json_file)
-                run['total'] = data['total_particles']
-                run['width'] = data['space_width']
+            # with open(f'{path}/{foldername}/static.json') as json_file:
+            #     data = json.load(json_file)
+            #     run['total'] = data['total_particles']
+            #     run['width'] = data['space_width']
                 
             with open(f'{path}/{foldername}/snapshots.json') as json_file:
                 data = json.load(json_file)
@@ -34,6 +35,6 @@ class TimeExporter:
                 run['frecuency'] = collitions / totalTime
                 run['times'] = [ t['t']-data['info'][i]['t'] for i , t in enumerate(data['info'][1:]) ]
             
-            outfile = open(f'./dt-exports/{foldername}_times.json' , "w")
+            outfile = open(f'../dt-exports/{foldername}_times.json' , "w")
             json.dump(run , outfile)
             outfile.close()

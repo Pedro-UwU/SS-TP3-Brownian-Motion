@@ -88,7 +88,7 @@ public class OutputGenerator {
 
 
     public static void initializeDynamicWriter(String folder){
-
+        comma = false;
         String filePath = DIRECTORY + "/" + folder + "/snapshots.json";
         File myObj = new File(filePath);
         try {

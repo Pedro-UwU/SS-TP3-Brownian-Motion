@@ -93,6 +93,8 @@ void draw() {
       line(prevX, prevY, currX, currY);
     }
   }
+  
+  saveFrame("videos/" + SIM_NAME + "/#####.png");
 
   //background(0);
   //println(snap_number);

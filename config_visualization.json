@@ -1,5 +1,5 @@
 {
-  "SIMULATION_NAME": "Sim_4",
-  "FRAME_RATE":30,
-  "SEE_PATH": true
+  "SIMULATION_NAME": "Vel_10_0",
+  "FRAME_RATE": 120,
+  "SEE_PATH": false
 }

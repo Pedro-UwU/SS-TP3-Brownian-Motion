@@ -1,16 +1,16 @@
 package ar.edu.itba;
 
-public class SimChain {
+public class SimChainVels {
     public static void main(String[] args) {
-        int total = 5;
+        int total = 1;
         Config.init_config();
         String original_name = Config.SIM_NAME;
-        int[] sizes = {100 , 115 , 130};
-        for (int j = 0; j < sizes.length; j++) {
+        double[] max_vels = {1 , 1.5 };
+        for (int j = 0; j < max_vels.length; j++) {
             for (int i = 0; i < total; i++) {
-                System.out.println(original_name + "_" + sizes[j] + "_" + i);
-                Config.SIM_NAME = original_name + "_" + sizes[j] + "_" + i;
-                Config.TOTAL_PARTICLES = sizes[j];
+                System.out.println(original_name + "_" + (int) (max_vels[j]*10) + "_" + i);
+                Config.SIM_NAME = original_name + "_" +(int) (max_vels[j]*10) + "_" + i;
+                Config.SMALL_P_MAX_VEL = max_vels[j];
                 while(simulationTry()){};
             }
         }

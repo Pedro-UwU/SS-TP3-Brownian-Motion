@@ -37,7 +37,7 @@ public class Generator {
             if (attempts >= MAX_ATTEMPTS) {
                 throw new RuntimeException("ERROR: Can't generate particles, couldn't find suitable space to generate new particle");
             }
-            double vel_mag = (Math.random() * (max_vel - min_vel)) + min_vel;
+            double vel_mag = (Math.random() * (max_vel - min_vel) ) + min_vel;
             double angle = Math.random() * 2 * Math.PI;
             vel = new Vector2D(vel_mag, 0).rotate(angle);
             mass = (Math.random() * (max_mass - min_mass)) + min_mass;
